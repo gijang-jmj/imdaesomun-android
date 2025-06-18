@@ -71,7 +71,9 @@
 ## 4. 기능별 마이그레이션 전략
 
 <details>
-<summary>### 4.1 임대공고 크롤링/저장/조회</summary>
+<summary>4.1 임대공고 크롤링/저장/조회</summary>
+
+### 4.1 임대공고 크롤링/저장/조회
 
 - **백엔드(Firebase Functions, Firestore)는 그대로 사용**
 - Android에서는 Firestore SDK로 데이터 조회/저장
@@ -201,7 +203,9 @@ data class File(
 </details>
 
 <details>
-<summary>### 4.2 인증/사용자 관리</summary>
+<summary>4.2 인증/사용자 관리</summary>
+
+### 4.2 인증/사용자 관리
 
 - Firebase Auth(Android SDK) 연동
 - 로그인/회원탈퇴/닉네임 등은 ViewModel에서 처리
@@ -265,7 +269,9 @@ class UserRepositoryImpl @Inject constructor(
 </details>
 
 <details>
-<summary>### 4.3 푸시 알림</summary>
+<summary>4.3 푸시 알림</summary>
+
+### 4.3 푸시 알림
 
 - FCM(Android SDK) 연동
 - 토큰 관리 및 Firestore 저장 로직 구현
@@ -327,7 +333,9 @@ override suspend fun registerFcmToken(
 </details>
 
 <details>
-<summary>### 4.4 원격 설정/보안 키 관리</summary>
+<summary>4.4 원격 설정/보안 키 관리</summary>
+
+### 4.4 원격 설정/보안 키 관리
 
 - Remote Config(Android SDK)로 API Key 수신
 - EncryptedSharedPreferences 등으로 안전하게 저장
@@ -416,6 +424,9 @@ class SecureStorage @Inject constructor(
 ---
 
 ## 5. 디렉토리 구조 예시 (Android)
+
+<details>
+<summary>5.1 전체 구조</summary>
 
 ### 5.1 전체 구조
 
@@ -560,6 +571,11 @@ app/
 └── google-services.json                      # Firebase 설정 (기존과 동일)
 ```
 
+</details>
+
+<details>
+<summary>5.2 Flutter와 Android 디렉토리 매핑</summary>
+
 ### 5.2 Flutter와 Android 디렉토리 매핑
 
 | Flutter 경로                     | Android 경로                                | 설명            |
@@ -586,9 +602,14 @@ app/
 | `assets/fonts/`                | `res/font/`                               | 폰트 리소스        |
 | `assets/icons/`                | `res/drawable/`                           | 아이콘 리소스       |
 
+</details>
+
 ---
 
 ## 6. 주요 패키지 및 의존성
+
+<details>
+<summary>6.1 build.gradle.kts (Module: app)</summary>
 
 ### 6.1 build.gradle.kts (Module: app)
 
@@ -652,6 +673,11 @@ dependencies {
 }
 ```
 
+</details>
+
+<details>
+<summary>6.2 주요 기능별 의존성 매핑</summary>
+
 ### 6.2 주요 기능별 의존성 매핑
 
 | Flutter 패키지                   | Android 의존성                          | 용도            |
@@ -673,6 +699,11 @@ dependencies {
 | `share_plus`                  | `Intent.ACTION_SEND`                 | 공유 기능         |
 | `permission_handler`          | Native Android permissions           | 권한 관리         |
 | `intl`                        | `java.text.*` 또는 `kotlinx-datetime`  | 날짜/시간 포맷      |
+
+</details>
+
+<details>
+<summary>6.3 AndroidManifest.xml 주요 설정</summary>
 
 ### 6.3 AndroidManifest.xml 주요 설정
 
@@ -716,12 +747,14 @@ dependencies {
 </manifest>
 ```
 
+</details>
+
 ---
 
 ## 7. 상세 구현 예시
 
 <details>
-<summary>## 7. 상세 구현 예시</summary>
+<summary>7.1 UiState 패턴 (Flutter AsyncValue → Android UiState)</summary>
 
 ### 7.1 UiState 패턴 (Flutter AsyncValue → Android UiState)
 
@@ -750,6 +783,11 @@ inline fun <T> UiState<T>.onLoading(action: () -> Unit): UiState<T> {
     return this
 }
 ```
+
+</details>
+
+<details>
+<summary>7.2 Flutter AsyncNotifier → Android ViewModel 패턴</summary>
 
 ### 7.2 Flutter AsyncNotifier → Android ViewModel 패턴
 
@@ -826,6 +864,11 @@ class HomeViewModel @Inject constructor(
     fun forceRefresh() = loadNotices(forceRefresh = true)
 }
 ```
+
+</details>
+
+<details>
+<summary>7.3 Compose UI 예시 (Flutter Widget → Android Composable)</summary>
 
 ### 7.3 Compose UI 예시 (Flutter Widget → Android Composable)
 
@@ -1009,6 +1052,11 @@ fun NoticeCard(
 }
 ```
 
+</details>
+
+<details>
+<summary>7.4 Navigation 구현 (go_router → Navigation Compose)</summary>
+
 ### 7.4 Navigation 구현 (go_router → Navigation Compose)
 
 **Flutter:**
@@ -1119,12 +1167,14 @@ fun AppNavigation(
 }
 ```
 
+</details>
+
 ---
 
 ## 8. 실무 팁 및 고려사항
 
 <details>
-<summary>## 8. 실무 팁 및 고려사항</summary>
+<summary>8.1 Flutter → Android 마이그레이션 시 주의사항</summary>
 
 ### 8.1 Flutter → Android 마이그레이션 시 주의사항
 
@@ -1152,6 +1202,11 @@ fun AppNavigation(
     - 동일한 `google-services.json` 파일 사용
     - Firebase SDK 초기화 코드 추가
     - Kotlin Coroutines 확장 함수 활용 (`-ktx` 라이브러리)
+
+</details>
+
+<details>
+<summary>8.2 성능 최적화 팁</summary>
 
 ### 8.2 성능 최적화 팁
 
@@ -1204,6 +1259,11 @@ fun AppNavigation(
        }
    }
    ```
+
+</details>
+
+<details>
+<summary>8.3 테스트 전략</summary>
 
 ### 8.3 테스트 전략
 
@@ -1356,5 +1416,4 @@ fun AppNavigation(
 
 ---
 
-> **📋 참고**: 본 마이그레이션 가이드는 실제 imdaesomun Flutter 프로젝트와 PRD를 기반으로 작성되었습니다. 실제 구현 시에는 프로젝트의 세부 요구사항과 팀의
-> 개발 환경에 맞게 조정하여 사용하시기 바랍니다.
+> **📋 참고**: 본 마이그레이션 가이드는 실제 imdaesomun Flutter 프로젝트와 PRD를 기반으로 작성되었습니다.
