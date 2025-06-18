@@ -1,9 +1,9 @@
-# 🛠️ Flutter → Android Native 마이그레이션 가이드
+# 🛠️ Flutter → Android Native 마이그레이션
 
 ## 1. 개요
 
-- 본 문서는 기존 Flutter 기반 **임대주택 공고 앱(imdaesomun)**을 Android Native(Kotlin, Jetpack Compose)로 마이그레이션하는
-  실무 가이드입니다.
+- 본 문서는 기존 Flutter 기반 **임대주택 공고 앱(imdaesomun)**을 Android Native(Kotlin, Jetpack Compose)로 마이그레이션
+  문서입니다.
 - PRD(제품 요구사항 명세서)와 기존 Flutter 구조를 참고하여, Android에서의 구현 전략과 매핑을 안내합니다.
 - **Firebase 백엔드는 그대로 유지**하고, 클라이언트만 Android Native로 변경합니다.
 
@@ -13,6 +13,7 @@
 - **Flutter 버전**: 3.29.2, Dart 3.7.2
 - **주요 기능**: SH/GH 임대공고 조회, 저장, 푸시 알림
 - **백엔드**: Firebase Functions + Firestore + FCM
+- **PRD**: https://github.com/gijang-jmj/imdaesomun/blob/main/docment/PRD.md
 
 ---
 
