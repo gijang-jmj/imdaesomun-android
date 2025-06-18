@@ -17,3 +17,4 @@
 .signing/
 .vscode/
 .env
+google-services.json
