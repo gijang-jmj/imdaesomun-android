@@ -70,7 +70,8 @@
 
 ## 4. 기능별 마이그레이션 전략
 
-### 4.1 임대공고 크롤링/저장/조회
+<details>
+<summary>### 4.1 임대공고 크롤링/저장/조회</summary>
 
 - **백엔드(Firebase Functions, Firestore)는 그대로 사용**
 - Android에서는 Firestore SDK로 데이터 조회/저장
@@ -197,7 +198,10 @@ data class File(
 )
 ```
 
-### 4.2 인증/사용자 관리
+</details>
+
+<details>
+<summary>### 4.2 인증/사용자 관리</summary>
 
 - Firebase Auth(Android SDK) 연동
 - 로그인/회원탈퇴/닉네임 등은 ViewModel에서 처리
@@ -258,7 +262,10 @@ class UserRepositoryImpl @Inject constructor(
 }
 ```
 
-### 4.3 푸시 알림
+</details>
+
+<details>
+<summary>### 4.3 푸시 알림</summary>
 
 - FCM(Android SDK) 연동
 - 토큰 관리 및 Firestore 저장 로직 구현
@@ -317,7 +324,10 @@ override suspend fun registerFcmToken(
 }
 ```
 
-### 4.4 원격 설정/보안 키 관리
+</details>
+
+<details>
+<summary>### 4.4 원격 설정/보안 키 관리</summary>
 
 - Remote Config(Android SDK)로 API Key 수신
 - EncryptedSharedPreferences 등으로 안전하게 저장
@@ -400,6 +410,8 @@ class SecureStorage @Inject constructor(
         encryptedPrefs.edit().putString("imdaesomun_api_key", apiKey).apply()
 }
 ```
+
+</details>
 
 ---
 
@@ -707,6 +719,9 @@ dependencies {
 ---
 
 ## 7. 상세 구현 예시
+
+<details>
+<summary>## 7. 상세 구현 예시</summary>
 
 ### 7.1 UiState 패턴 (Flutter AsyncValue → Android UiState)
 
@@ -1108,6 +1123,9 @@ fun AppNavigation(
 
 ## 8. 실무 팁 및 고려사항
 
+<details>
+<summary>## 8. 실무 팁 및 고려사항</summary>
+
 ### 8.1 Flutter → Android 마이그레이션 시 주의사항
 
 1. **상태 관리 패턴 변경**
@@ -1137,66 +1155,55 @@ fun AppNavigation(
 
 ### 8.2 성능 최적화 팁
 
-<details>
-<summary>4.1 효율적인 리스트 렌더링</summary>
+1. **Compose 최적화**
+   ```kotlin
+   // 불필요한 recomposition 방지
+   @Stable
+   data class NoticeUiState(...)
+   
+   // Key를 통한 효율적인 LazyList
+   LazyColumn {
+       items(notices, key = { it.id }) { notice ->
+           NoticeCard(notice = notice)
+       }
+   }
+   ```
 
-```kotlin
-@Stable
-data class NoticeUiState(...)
+2. **이미지 로딩 최적화**
+   ```kotlin
+   // Coil을 활용한 효율적인 이미지 로딩
+   AsyncImage(
+       model = ImageRequest.Builder(LocalContext.current)
+           .data(imageUrl)
+           .crossfade(true)
+           .memoryCachePolicy(CachePolicy.ENABLED)
+           .build(),
+       contentDescription = null
+   )
+   ```
 
-// Key를 통한 효율적인 LazyList
-LazyColumn {
-    items(notices, key = { it.id }) { notice ->
-        NoticeCard(notice = notice)
-    }
-}
-```
-
-</details>
-
-<details>
-<summary>4.2 이미지 로딩 최적화</summary>
-
-```kotlin
-// Coil을 활용한 효율적인 이미지 로딩
-AsyncImage(
-    model = ImageRequest.Builder(LocalContext.current)
-        .data(imageUrl)
-        .crossfade(true)
-        .memoryCachePolicy(CachePolicy.ENABLED)
-        .build(),
-    contentDescription = null
-)
-```
-
-</details>
-
-<details>
-<summary>4.3 데이터베이스 캐싱</summary>
-
-```kotlin
-// Room Database 활용 (필요시)
-@Entity(tableName = "notices")
-data class NoticeEntity(...)
-
-// 캐시 우선 로딩 전략
-override suspend fun getNotices(): Flow<List<Notice>> = flow {
-    // 1. 로컬 캐시 먼저 방출
-    val cached = localDataSource.getNotices()
-    if (cached.isNotEmpty()) emit(cached)
-
-    // 2. 원격 데이터 fetch 후 방출
-    try {
-        val remote = remoteDataSource.getNotices()
-        localDataSource.saveNotices(remote)
-        emit(remote)
-    } catch (e: Exception) {
-        if (cached.isEmpty()) throw e
-    }
-}
-```
-
-</details>
+3. **데이터베이스 캐싱**
+   ```kotlin
+   // Room Database 활용 (필요시)
+   @Entity(tableName = "notices")
+   data class NoticeEntity(...)
+   
+   // 캐시 우선 로딩 전략
+   override suspend fun getNotices(): Flow<List<Notice>> = flow {
+       // 1. 로컬 캐시 먼저 방출
+       val cached = localDataSource.getNotices()
+       if (cached.isNotEmpty()) emit(cached)
+       
+       // 2. 원격 데이터 fetch 후 방출
+       try {
+           val remote = remoteDataSource.getNotices()
+           localDataSource.saveNotices(remote)
+           emit(remote)
+       } catch (e: Exception) {
+           if (cached.isEmpty()) throw e
+       }
+   }
+   ```
 
 ### 8.3 테스트 전략
 
@@ -1235,6 +1242,8 @@ override suspend fun getNotices(): Flow<List<Notice>> = flow {
            .assertIsDisplayed()
    }
    ```
+
+</details>
 
 ---
 
