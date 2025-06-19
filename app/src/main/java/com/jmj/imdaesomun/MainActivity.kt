@@ -4,13 +4,19 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.jmj.imdaesomun.ui.screen.HomeScreen
+import androidx.lifecycle.lifecycleScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.jmj.imdaesomun.core.theme.ImdaesomunTheme
+import com.jmj.imdaesomun.ui.screen.HomeScreen
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
     // Declare the launcher at the top of your Activity/Fragment:
@@ -46,6 +52,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         askNotificationPermission()
+
+        // FCM 토큰을 코루틴 방식으로 가져오기
+        lifecycleScope.launch {
+            try {
+                val token = FirebaseMessaging.getInstance().token.await()
+                val msg = "FCM 토큰: $token"
+                Log.d("getToken", msg)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Log.w("getToken", "Fetching FCM registration token failed", e)
+            }
+        }
+
         enableEdgeToEdge()
         setContent {
             ImdaesomunTheme {

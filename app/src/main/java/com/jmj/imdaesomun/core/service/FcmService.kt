@@ -37,6 +37,18 @@ class FcmService : FirebaseMessagingService() {
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
 
+        // 메시지 내용이 있으면 Toast로 표시
+        val message = remoteMessage.notification?.body ?: remoteMessage.data["message"]
+        message?.let {
+            android.os.Handler(android.os.Looper.getMainLooper()).post {
+                android.widget.Toast.makeText(
+                    applicationContext,
+                    it,
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }

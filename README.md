@@ -1315,7 +1315,7 @@ fun AppNavigation(
 - [x] Android Studio 설치 및 설정
 - [x] Kotlin, Compose 개발 환경 구성
 - [x] Firebase 프로젝트 연동 (`google-services.json`)
-- [ ] 기존 Firebase Functions/Firestore 연결 확인
+- [x] 기존 Firebase Functions/Firestore 연결 확인
 
 ### 9.2 프로젝트 구조 설계
 
