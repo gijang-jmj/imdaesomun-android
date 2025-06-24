@@ -1,6 +1,9 @@
-package com.jmj.imdaesomun.core.service
+package com.jmj.imdaesomun.presentation.service
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -40,11 +43,11 @@ class FcmService : FirebaseMessagingService() {
         // 메시지 내용이 있으면 Toast로 표시
         val message = remoteMessage.notification?.body ?: remoteMessage.data["message"]
         message?.let {
-            android.os.Handler(android.os.Looper.getMainLooper()).post {
-                android.widget.Toast.makeText(
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(
                     applicationContext,
                     it,
-                    android.widget.Toast.LENGTH_LONG
+                    Toast.LENGTH_LONG
                 ).show()
             }
         }

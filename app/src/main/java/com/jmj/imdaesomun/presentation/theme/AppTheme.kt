@@ -1,11 +1,10 @@
-package com.jmj.imdaesomun.core.theme
+package com.jmj.imdaesomun.presentation.theme
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-private val ColorScheme = darkColorScheme(
+private val ColorScheme = lightColorScheme(
     primary = AppColor.Teal500,
 )
 
@@ -14,7 +13,7 @@ fun ImdaesomunTheme(
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = ColorScheme,
         content = content
     )
 }

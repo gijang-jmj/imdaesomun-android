@@ -11,10 +11,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.messaging.FirebaseMessaging
-import com.jmj.imdaesomun.core.theme.ImdaesomunTheme
-import com.jmj.imdaesomun.ui.screen.HomeScreen
+import com.jmj.imdaesomun.presentation.theme.ImdaesomunTheme
+import com.jmj.imdaesomun.presentation.screen.home.HomeScreen
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -51,9 +52,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // push notification 권한 요청
         askNotificationPermission()
 
-        // FCM 토큰을 코루틴 방식으로 가져오기
+        // FCM 토큰을 가져오기
         lifecycleScope.launch {
             try {
                 val token = FirebaseMessaging.getInstance().token.await()
@@ -65,7 +68,14 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        // Edge-to-edge 모드 활성화
         enableEdgeToEdge()
+
+        // 상태바 아이콘을 어두운 색으로 설정
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = true
+
+        // 홈 화면을 설정
         setContent {
             ImdaesomunTheme {
                 HomeScreen()

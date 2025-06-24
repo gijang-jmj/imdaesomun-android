@@ -1319,11 +1319,11 @@ fun AppNavigation(
 
 ### 9.2 프로젝트 구조 설계
 
-- [ ] Clean Architecture 디렉토리 구조 설계
+- [x] Clean Architecture 디렉토리 구조 설계
 - [ ] Hilt DI 모듈 설계 및 구현
 - [ ] 데이터 모델 클래스 변환 (Freezed → Data class)
 - [ ] Repository 패턴 구현
-- [ ] UseCase 레이어 구현 (필요시)
+- [ ] UseCase 레이어 구현
 
 ### 9.3 핵심 기능 구현
 
@@ -1369,8 +1369,6 @@ fun AppNavigation(
 ### 9.8 부가 기능
 
 - [ ] 웹뷰 구현 (공고 원본 링크, 첨부파일)
-- [ ] 공유 기능 (Intent.ACTION_SEND)
-- [ ] 다크모드 지원
 - [ ] 접근성 (Accessibility) 지원
 - [ ] 앱 아이콘 및 스플래시 화면
 

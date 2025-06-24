@@ -1,4 +1,4 @@
-package com.jmj.imdaesomun.core.theme
+package com.jmj.imdaesomun.presentation.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight

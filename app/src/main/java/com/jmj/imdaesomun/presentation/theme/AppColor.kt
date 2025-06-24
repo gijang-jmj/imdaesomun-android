@@ -1,4 +1,4 @@
-package com.jmj.imdaesomun.core.theme
+package com.jmj.imdaesomun.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -35,7 +35,7 @@ object AppColor {
 
     /** Gray 900 (#1F2937) */
     val Gray900 = Color(0xFF1F2937)
-    
+
     /** Teal 50 (#F3FEFD) */
     val Teal50 = Color(0xFFF3FEFD)
 
